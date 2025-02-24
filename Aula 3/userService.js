@@ -1,20 +1,22 @@
-const User = require("./user.js"); // Importa a classe User  
+const User = require("./user.js");  
+const path = require('path'); //manipular caminhos de qualquer lugar
+const fs = require('fs'); //file system = manipulação de arquivos externos
 
 class UserService {  
     constructor() {  
-        this.users = []; // Array para armazenar usuários  
-        this.nextId = 1; // Contador para gerar IDs  
+        this.users = [];  
+        this.nextId = 1;   
     }  
 
     addUser(nome, email) {  
-        const user = new User(this.nextId++, nome, email); // Cria um novo usuário  
-        this.users.push(user); // Adiciona o usuário ao array  
-        return user; // Retorna o usuário criado  
+        const user = new User(this.nextId++, nome, email);   
+        this.users.push(user); 
+        return user;  
     }  
 
     getUsers() {  
-        return this.users; // Retorna todos os usuários armazenados  
+        return this.users; 
     }  
 }  
 
-module.exports = new UserService(); // Exporta uma nova instância do UserService
+module.exports = new UserService(); 
