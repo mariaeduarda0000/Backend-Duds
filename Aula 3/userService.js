@@ -1,79 +1,68 @@
 const User = require("./user.js");  
-const path = require('path'); //manipular caminhos de qualquer lugar
-const fs = require('fs'); //file system = manipulação de arquivos externos
-const { json } = require("body-parser");
-
+const path = require('path');  
+const fs = require('fs');  
 
 class UserService {  
     constructor() {  
         this.filePath = path.join(__dirname, 'user.json');
         this.users = this.loadUser();  
-        this.nextId = this.getUsers();  //contador, armazena o id
+        this.nextId = this.getNextId();  
     }  
 
+    loadUser() {
+        try {
+            if (fs.existsSync(this.filePath)) {  
+                const data = fs.readFileSync(this.filePath, 'utf8'); 
+                
+                if (!data.trim()) { // Verifica se o arquivo está vazio
+                    return [];
+                }
 
-    loadUser(){
-        try{ //tenta executar o que está dentro de if
-
-
-        if(fs.existsSync(this.filePath)){  //verifica se há algo escrito no json
-            const data = fs.readFileSync(this.filePath); //se tiver, ele lerá o que está escrito e jogar dentro de "data"
-            return JSON.parse(data);
-        }}
-        catch(erro){ //se houver erro ele vai mostrar qual é
-            console.log("Erro ao carregar o arquivo!", erro); 
+                return JSON.parse(data);  
+            }
+        } catch (erro) {  
+            console.log("Erro ao carregar o arquivo!", erro);  
         }
-        return []; //quebra o código, chama o array vazio de userService
+        return [];  
     }
 
-
-
-    //define o próximo id
-
-    getNextId(){
-        try{
-        if(this.users.length===0) return 1;
-        return Math.max(...this.users.map(users => users.id))+1 //identifica o maior número presente e soma mais um.
-        }catch(erro){
-            console.log("Erro na busca pelo id", erro)
-        }
-    }
-
-
-
-    saveUsers(){
-        try{
-        fs.writeFileSync(this.filePath, JSON.strigify(this.users)); //chama a biblioteca fs e "escreve" o arquivo em formato json
-        }catch(erro){
-            console.log("Erro ao salvar o arquivo!");
+    getNextId() {
+        try {
+            if (this.users.length === 0) return 1;
+            return Math.max(...this.users.map(user => user.id)) + 1;
+        } catch (erro) {
+            console.log("Erro na busca pelo ID", erro);
+            return 1; // Retorna 1 para evitar problemas
         }
     }
 
+    saveUsers() {
+        try {
+            fs.writeFileSync(this.filePath, JSON.stringify(this.users, null, 2));  
+        } catch (erro) {
+            console.log("Erro ao salvar o arquivo!", erro);
+        }
+    }
 
-
-    //Cria um novo usuário
-    
     addUser(nome, email) {  
-        try{
-        const user = new User(this.nextId++, nome, email);  //"++" soma um id
-        this.users.push(this.users); //adiciona um usuário no array
-        this.saveUsers();
-        }catch(erro){
-            console.log("Falha ao criar um usuário!", erro)
+        try {
+            const user = new User(this.nextId++, nome, email);  
+            this.users.push(user);  
+            this.saveUsers();
+            return user;  
+        } catch (erro) {
+            console.log("Falha ao criar um usuário!", erro);
         }
-        return users;  
     }  
-
-
 
     getUsers() {  
-        try{
-        return this.users;
-        }catch(erro){
-            console.log("Falha ao armazenar o usuário.", erro)
+        try {
+            return this.users;
+        } catch (erro) {
+            console.log("Falha ao armazenar o usuário.", erro);
+            return [];
         } 
     }  
 }  
 
-
-module.exports = new UserService(); 
+module.exports = new UserService();
