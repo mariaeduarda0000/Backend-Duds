@@ -44,9 +44,16 @@ class UserService {
         }
     }
 
-    addUser(nome, email) {  
+    addUser(nome, email, senha, endereco,telefone, cpf){
         try {
-            const user = new User(this.nextId++, nome, email);  
+            if(this.users.some(user => user.cpf === cpf)){
+                console.log("Cpf já cadastrado!");      //verifica se o cpf já existe, compara com o que está dentro do array
+                return null
+            }
+
+            //Se o cpf estiver correto, sai do if e cadastra um novo usuário.
+
+            const user = new User(this.nextId++, nome, email, senha, endereco, telefone, cpf);
             this.users.push(user);  
             this.saveUsers();
             return user;  
