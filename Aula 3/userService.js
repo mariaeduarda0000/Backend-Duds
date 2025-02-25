@@ -24,6 +24,7 @@ class UserService {
     }
 
     //define o próximo id
+
     getNextId(){
         try{
         if(this.users.length===0) return 1;
@@ -34,16 +35,24 @@ class UserService {
     }
 
 
-
-
+    //Cria um novo usuário
+    
     addUser(nome, email) {  
-        const user = new User(this.nextId++, nome, email);   //cria um novo usuário, "++" soma um, 
-        this.users.push(user); 
+        try{
+        const user = new User(this.nextId++, nome, email);  //"++" soma um id
+        this.users.push(user); //adiciona um usuário no array
+        }catch(erro){
+            console.log("Falha ao criar um usuário!")
+        }
         return user;  
     }  
 
     getUsers() {  
-        return this.users; 
+        try{
+        return this.users;
+        }catch(erro){
+            console.log("Falha ao armazenar o usuário.")
+        } 
     }  
 }  
 
