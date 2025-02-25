@@ -31,5 +31,14 @@
     "endereco": "campante",
     "telefone": "16368717",
     "cpf": "328819333SS"
+  },
+  {
+    "id": 6,
+    "nome": "nickin",
+    "email": "viadinhow@gmail.com",
+    "senha": "1004",
+    "endereco": "pompeia",
+    "telefone": "09876890",
+    "cpf": "98675432"
   }
 ]
