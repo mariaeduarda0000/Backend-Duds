@@ -1,10 +1,5 @@
 [
   {
-    "id": 1,
-    "nome": "Duda",
-    "email": "dudamaria@gmail.com"
-  },
-  {
     "id": 2,
     "nome": "nobruapelaum",
     "email": "querohype@gmail.com"
@@ -22,15 +17,6 @@
     "endereco": "campante",
     "telefone": "16368717",
     "cpf": "328819333Ss"
-  },
-  {
-    "id": 5,
-    "nome": "asdsadwas",
-    "email": "asdsawd@gmail.com",
-    "senha": "1234",
-    "endereco": "campante",
-    "telefone": "16368717",
-    "cpf": "328819333SS"
   },
   {
     "id": 6,

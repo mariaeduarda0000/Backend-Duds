@@ -83,9 +83,9 @@ class UserService {  //usa a classe userService para gerenciar usuários
         }
     }
 
-    putUser(){
+    putUser(id){
         try{
-
+            this.users = this.users.update 
         }catch{
             console.log("Falha ao alterar o usuário");
         }
