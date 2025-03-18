@@ -1,10 +1,12 @@
-const User = require("./user.js");  
+const User = require("./user.js");  //chama user de user.js
+
+//importa módulos
 const path = require('path');  
 const fs = require('fs');  
 
-class UserService {  
+class UserService {  //usa a classe userService para gerenciar usuários
     constructor() {  
-        this.filePath = path.join(__dirname, 'user.json');
+        this.filePath = path.join(__dirname, 'user.json'); //caminho json onde fica os usuários armazenados
         this.users = this.loadUser();  
         this.nextId = this.getNextId();  
     }  
@@ -26,7 +28,7 @@ class UserService {
         return [];  
     }
 
-    getNextId() {
+    getNextId() { //id novo
         try {
             if (this.users.length === 0) return 1;
             return Math.max(...this.users.map(user => user.id)) + 1;
@@ -36,7 +38,7 @@ class UserService {
         }
     }
 
-    saveUsers() {
+    saveUsers() { //salvar usuários
         try {
             fs.writeFileSync(this.filePath, JSON.stringify(this.users, null, 2));  
         } catch (erro) {
@@ -44,7 +46,7 @@ class UserService {
         }
     }
 
-    addUser(nome, email, senha, endereco,telefone, cpf){
+    addUser(nome, email, senha, endereco,telefone, cpf){  ;//adicionar usuário
         try {
             if(this.users.some(user => user.cpf === cpf)){
                 console.log("Cpf já cadastrado!");      //verifica se o cpf já existe, compara com o que está dentro do array
@@ -62,7 +64,7 @@ class UserService {
         }
     }  
 
-    getUsers() {  
+    getUsers() {  //mostrar usuário
         try {
             return this.users;
         } catch (erro) {
@@ -70,6 +72,25 @@ class UserService {
             return [];
         } 
     }  
+
+    deleteUser(id){ //precisa do id para excluir
+        try{
+            this.users =  this.users.filter(user => user.id !==id) //filtra o usuário pelo id, na função ele cria um novo array onde o usuário com o id mencionado não está incluso.
+            this.saveUsers(); //salva
+
+        }catch{
+            console.log("Falha ao excluir usuário!");
+        }
+    }
+
+    putUser(){
+        try{
+
+        }catch{
+            console.log("Falha ao alterar o usuário");
+        }
+    }
+
 }  
 
 module.exports = new UserService();

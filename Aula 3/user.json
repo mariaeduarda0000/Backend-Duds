@@ -40,5 +40,14 @@
     "endereco": "pompeia",
     "telefone": "09876890",
     "cpf": "98675432"
+  },
+  {
+    "id": 7,
+    "nome": "maria",
+    "email": "mariaduds@gmail.com",
+    "senha": "5590",
+    "endereco": "Quintana",
+    "telefone": "978835622",
+    "cpf": "08492775055"
   }
 ]
