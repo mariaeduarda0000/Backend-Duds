@@ -35,5 +35,32 @@
     "endereco": "Quintana",
     "telefone": "978835622",
     "cpf": "08492775055"
+  },
+  {
+    "id": 8,
+    "nome": "Rafael",
+    "email": "gordinho@gmail.com",
+    "senha": "3101",
+    "endereco": "Quintana",
+    "telefone": "982937263",
+    "cpf": "09284082743"
+  },
+  {
+    "id": 9,
+    "nome": "Rafael",
+    "email": "gordinho@gmail.com",
+    "senha": "3101",
+    "endereco": "Quintana",
+    "telefone": "982937263",
+    "cpf": "092840855543"
+  },
+  {
+    "id": 10,
+    "nome": "Rafael",
+    "email": "gordinho@gmail.com",
+    "senha": "$2b$10$61vVVS1Ab53dBhs.0KUr7ufROlPH7116b6rv0PuXyo6gVaEGtBobi",
+    "endereco": "Quintana",
+    "telefone": "982937263",
+    "cpf": "092840854555543"
   }
 ]

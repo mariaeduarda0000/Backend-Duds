@@ -6,14 +6,14 @@ app.use(express.json()); // Configura o Express para interpretar requisições c
 
 
 //rota para criar usuario
-app.post("/users", (req, res)=>{
+app.post("/users", async (req, res)=>{
     const {nome, email, senha, endereco, telefone, cpf} = req.body;
     if(!nome || !email || !senha || !endereco || !telefone || !cpf){   // Verifica se todos os campos obrigatórios foram fornecidos
         return res.status(400).json
         ({error: "nome e email são obrigatorios"})
     }
 
-    const user = userService.addUser(nome, email, senha, endereco, telefone, cpf);  // Chama a função "addUser" do userService para adicionar o usuário
+    const user = await userService.addUser(nome, email, senha, endereco, telefone, cpf);  // Chama a função "addUser" do userService para adicionar o usuário
     res.status(200).json({user});
 })
 

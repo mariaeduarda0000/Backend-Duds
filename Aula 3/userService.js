@@ -1,31 +1,33 @@
 const User = require("./user.js");  //chama user de user.js
 
 //importa módulos
-const path = require('path');  
-const fs = require('fs');  
+const path = require('path');
+const fs = require('fs');
+const bcrypt = require('bcryptjs'); //criptografa a senha
+const { error } = require("console");
 
 class UserService {  //usa a classe userService para gerenciar usuários
-    constructor() {  
+    constructor() {
         this.filePath = path.join(__dirname, 'user.json'); //caminho json onde fica os usuários armazenados
-        this.users = this.loadUser();  
-        this.nextId = this.getNextId();  
-    }  
+        this.users = this.loadUser();
+        this.nextId = this.getNextId();
+    }
 
     loadUser() {
         try {
-            if (fs.existsSync(this.filePath)) {  
-                const data = fs.readFileSync(this.filePath, 'utf8'); 
-                
+            if (fs.existsSync(this.filePath)) {
+                const data = fs.readFileSync(this.filePath, 'utf8');
+
                 if (!data.trim()) { // Verifica se o arquivo está vazio
                     return [];
                 }
 
-                return JSON.parse(data);  
+                return JSON.parse(data);
             }
-        } catch (erro) {  
-            console.log("Erro ao carregar o arquivo!", erro);  
+        } catch (erro) {
+            console.log("Erro ao carregar o arquivo!", erro);
         }
-        return [];  
+        return [];
     }
 
     getNextId() { //id novo
@@ -40,29 +42,31 @@ class UserService {  //usa a classe userService para gerenciar usuários
 
     saveUsers() { //salvar usuários
         try {
-            fs.writeFileSync(this.filePath, JSON.stringify(this.users, null, 2));  
+            fs.writeFileSync(this.filePath, JSON.stringify(this.users, null, 2));
         } catch (erro) {
             console.log("Erro ao salvar o arquivo!", erro);
         }
     }
 
-    addUser(nome, email, senha, endereco,telefone, cpf){  ;//adicionar usuário
+    async addUser(nome, email, senha, endereco, telefone, cpf) {
+        ;//adicionar usuário
         try {
-            if(this.users.some(user => user.cpf === cpf)){
+            if (this.users.some(user => user.cpf === cpf)) {
                 console.log("Cpf já cadastrado!");      //verifica se o cpf já existe, compara com o que está dentro do array
                 return null
             }
 
             //Se o cpf estiver correto, sai do if e cadastra um novo usuário.
-
-            const user = new User(this.nextId++, nome, email, senha, endereco, telefone, cpf);
-            this.users.push(user);  
+            const senhaCripto = await bcrypt.hash(senha, 10);
+    
+            const user = new User(this.nextId++, nome, email, senhaCripto, endereco, telefone, cpf);
+            this.users.push(user);
             this.saveUsers();
-            return user;  
+            return user;
         } catch (erro) {
             console.log("Falha ao criar um usuário!", erro);
         }
-    }  
+    }
 
     getUsers() {  //mostrar usuário
         try {
@@ -70,27 +74,46 @@ class UserService {  //usa a classe userService para gerenciar usuários
         } catch (erro) {
             console.log("Falha ao armazenar o usuário.", erro);
             return [];
-        } 
-    }  
+        }
+    }
 
-    deleteUser(id){ //precisa do id para excluir
-        try{
-            this.users =  this.users.filter(user => user.id !==id) //filtra o usuário pelo id, na função ele cria um novo array onde o usuário com o id mencionado não está incluso.
+    deleteUser(id) { //precisa do id para excluir
+        try {
+            this.users = this.users.filter(user => user.id !== id) //filtra o usuário pelo id, na função ele cria um novo array onde o usuário com o id mencionado não está incluso.
             this.saveUsers(); //salva
 
-        }catch{
+        } catch {
             console.log("Falha ao excluir usuário!");
         }
     }
 
-    putUser(id){
-        try{
-            this.users = this.users.update 
-        }catch{
+    putUser(id) {
+        try {
+            this.users = this.users.update
+        } catch {
             console.log("Falha ao alterar o usuário");
         }
     }
 
-}  
+    updateUser(id, nome, email, senha, endereco, telefone, cpf) {
+        try {
+            const user = this.users.find(user => user.id === id);
+            if (!user) throw new error('Usuário não encontrado');
+            user.nome = nome;
+            user.email = email;
+            user.senha = senhaCripto;
+            user.endereco = endereco;
+            user.telefone = telefone;
+            user.cpf = cpf;
+            this.saveUsers();
+            return user;
+
+        } catch (erro) {
+            console.log("Erro ao atualizar o usuário", erro);
+        }
+    }
+}
+
+
 
 module.exports = new UserService();
