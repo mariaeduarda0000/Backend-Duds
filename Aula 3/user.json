@@ -71,5 +71,14 @@
     "endereco": "Quintana",
     "telefone": "982930363",
     "cpf": "987462539"
+  },
+  {
+    "id": 12,
+    "nome": "maria",
+    "email": "mariaS@gmail.com",
+    "senha": "$2b$10$7ELlAyq30vgKs/ZellNpg.W./96JTLIK3C0ZFcj8SI1SlTUvhC4DC",
+    "endereco": "Pompeia",
+    "telefone": "982930363",
+    "cpf": "98746989"
   }
 ]

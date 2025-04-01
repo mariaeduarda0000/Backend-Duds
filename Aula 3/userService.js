@@ -53,12 +53,12 @@ class UserService {  //usa a classe userService para gerenciar usuários
         try {
             if (this.users.some(user => user.cpf === cpf)) {
                 console.log("Cpf já cadastrado!");      //verifica se o cpf já existe, compara com o que está dentro do array
-                throw new error('Cpf já cadastrado! Tente novamente.')
+                throw new Error('Cpf já cadastrado! Tente novamente.')
             }
 
             //Se o cpf estiver correto, sai do if e cadastra um novo usuário.
             const senhaCripto = await bcrypt.hash(senha, 10);
-    
+
             const user = new User(this.nextId++, nome, email, senhaCripto, endereco, telefone, cpf);
             this.users.push(user);
             this.saveUsers();
@@ -98,7 +98,17 @@ class UserService {  //usa a classe userService para gerenciar usuários
 
     updateUser(id, nome, email, senha, endereco, telefone, cpf) {
         try {
-            const user = this.users.find(user => user.id === id);
+            const users = this.users.find(user => user.id === id)
+            if (!user) {throw new Error ('Usuário não encontrado!')}
+
+            if (this.users.some(existenteUser => existenteUser.cpf === cpf && existenteUser.id !== id)) {
+                throw new Error('CPF já cadastrado! Tente novamente.');
+            }
+
+            const user = this.user
+            const senhaCripto = bcrypt.hash(senha, 10);
+            
+            rs.find(user => user.id === id);
             if (!user) throw new error('Usuário não encontrado');
             user.nome = nome;
             user.email = email;
@@ -111,6 +121,7 @@ class UserService {  //usa a classe userService para gerenciar usuários
 
         } catch (erro) {
             console.log("Erro ao atualizar o usuário", erro);
+            throw erro;
         }
     }
 }
