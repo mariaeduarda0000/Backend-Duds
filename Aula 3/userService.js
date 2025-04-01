@@ -53,7 +53,7 @@ class UserService {  //usa a classe userService para gerenciar usuários
         try {
             if (this.users.some(user => user.cpf === cpf)) {
                 console.log("Cpf já cadastrado!");      //verifica se o cpf já existe, compara com o que está dentro do array
-                return null
+                throw new error('Cpf já cadastrado! Tente novamente.')
             }
 
             //Se o cpf estiver correto, sai do if e cadastra um novo usuário.
@@ -65,6 +65,7 @@ class UserService {  //usa a classe userService para gerenciar usuários
             return user;
         } catch (erro) {
             console.log("Falha ao criar um usuário!", erro);
+            throw erro
         }
     }
 

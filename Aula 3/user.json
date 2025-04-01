@@ -62,5 +62,14 @@
     "endereco": "Quintana",
     "telefone": "982937263",
     "cpf": "092840854555543"
+  },
+  {
+    "id": 11,
+    "nome": "dudinha",
+    "email": "duds@gmail.com",
+    "senha": "$2b$10$j4jbz5p25.bV3DZSB662budoWiHJw2W31zdV2DDa94xSKCmLbu2oG",
+    "endereco": "Quintana",
+    "telefone": "982930363",
+    "cpf": "987462539"
   }
 ]
