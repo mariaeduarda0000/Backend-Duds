@@ -4,6 +4,8 @@ const User = require("./user.js");  //chama user de user.js
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs'); //criptografa a senha
+const mysql = require("./mysql"); //importa funções de conexão com o mysql
+
 const { error } = require("console");
 
 class UserService {  //usa a classe userService para gerenciar usuários
@@ -49,7 +51,6 @@ class UserService {  //usa a classe userService para gerenciar usuários
     }
 
     async addUser(nome, email, senha, endereco, telefone, cpf) {
-        ;//adicionar usuário
         try {
             if (this.users.some(user => user.cpf === cpf)) {
                 console.log("Cpf já cadastrado!");      //verifica se o cpf já existe, compara com o que está dentro do array
@@ -59,10 +60,14 @@ class UserService {  //usa a classe userService para gerenciar usuários
             //Se o cpf estiver correto, sai do if e cadastra um novo usuário.
             const senhaCripto = await bcrypt.hash(senha, 10);
 
-            const user = new User(this.nextId++, nome, email, senhaCripto, endereco, telefone, cpf);
-            this.users.push(user);
-            this.saveUsers();
-            return user;
+            const resultados = await mysql.execute(
+                `INSERT  INTO usuários(nome, email, senha, endereço, telefone, CPF)
+			            VALUES (?, ?, ?, ?, ?, ?);`,
+                        [nome,email,senhaCripto, endereco, telefone, cpf]
+            );
+        return resultados;
+
+
         } catch (erro) {
             console.log("Falha ao criar um usuário!", erro);
             throw erro

@@ -80,5 +80,14 @@
     "endereco": "Pompeia",
     "telefone": "982930363",
     "cpf": "98746989"
+  },
+  {
+    "id": 13,
+    "nome": "duds",
+    "email": "dudsMaria@gmail.com",
+    "senha": "$2b$10$8Vwi7clooRSdlWQNaKRchOBrBTJBr7Y/UP5MoEver6V/o/LDN118.",
+    "endereco": "Quintana",
+    "telefone": "92839027849",
+    "cpf": "82963802982"
   }
 ]

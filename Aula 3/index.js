@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require("express"); //biblioteca dentro do node(js) - rota, transfere dados
 const userService = require("./userService");
 
 const app = express(); // Cria uma instância do aplicativo Express
@@ -15,7 +15,7 @@ app.post("/users", async (req, res) => {
         }
 
         const user = await userService.addUser(nome, email, senha, endereco, telefone, cpf);  // Chama a função "addUser" do userService para adicionar o usuário
-        res.status(200).json({ user });
+        res.status(201).json({ mensagem: "Usuário cadastrado com sucesso!" });
 
     } catch (erro) {
         console.log(erro);
