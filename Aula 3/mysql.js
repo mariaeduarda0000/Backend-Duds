@@ -1,13 +1,13 @@
 const { error } = require('console');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const { resolve } = require('path');
 
-const pool = mysql.createPool({  //faz a conexão 
+const pool = mysql.createConnection({  //faz a conexão 
     "user": "root",
     "password": "root",
     "database": "idev3",
     "host": "localhost",
-    "port": "3306"
+    "port": "3307"
 });
 
 exports.execute = (query, param = [], varpool=pool) => { 

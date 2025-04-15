@@ -52,10 +52,7 @@ class UserService {  //usa a classe userService para gerenciar usuários
 
     async addUser(nome, email, senha, endereco, telefone, cpf) {
         try {
-            if (this.users.some(user => user.cpf === cpf)) {
-                console.log("Cpf já cadastrado!");      //verifica se o cpf já existe, compara com o que está dentro do array
-                throw new Error('Cpf já cadastrado! Tente novamente.')
-            }
+        
 
             //Se o cpf estiver correto, sai do if e cadastra um novo usuário.
             const senhaCripto = await bcrypt.hash(senha, 10);
@@ -85,7 +82,8 @@ class UserService {  //usa a classe userService para gerenciar usuários
 
     deleteUser(id) { //precisa do id para excluir
         try {
-            this.users = this.users.filter(user => user.id !== id) //filtra o usuário pelo id, na função ele cria um novo array onde o usuário com o id mencionado não está incluso.
+            //filtra o usuário pelo id, na função ele cria um novo array onde o usuário com o id mencionado não está incluso.
+            this.users = this.users.filter(user => user.id !== id) 
             this.saveUsers(); //salva
 
         } catch {
@@ -101,28 +99,23 @@ class UserService {  //usa a classe userService para gerenciar usuários
         }
     }
 
-    updateUser(id, nome, email, senha, endereco, telefone, cpf) {
+    async updateUser(id, nome, email, senha, endereco, telefone, cpf) {
         try {
-            const users = this.users.find(user => user.id === id)
-            if (!user) {throw new Error ('Usuário não encontrado!')}
 
-            if (this.users.some(existenteUser => existenteUser.cpf === cpf && existenteUser.id !== id)) {
-                throw new Error('CPF já cadastrado! Tente novamente.');
-            }
+            //criptografa a senha antes de atualizá-la
+            const senhaCripto = await bcrypt.hash(senha, 10); 
 
-            const user = this.user
-            const senhaCripto = bcrypt.hash(senha, 10);
-            
-            rs.find(user => user.id === id);
-            if (!user) throw new error('Usuário não encontrado');
-            user.nome = nome;
-            user.email = email;
-            user.senha = senhaCripto;
-            user.endereco = endereco;
-            user.telefone = telefone;
-            user.cpf = cpf;
-            this.saveUsers();
-            return user;
+            //query de atualização com await que espera antes de começar a executar outra coisa
+            const update = await mysql.execute(
+                `UPDATE  usuários
+                 SET  nome = ?, email = ?, senha = ?, endereço = ? , telefone = ?, CPF = ?
+                 WHERE  idUsuário =  ?;`,
+
+                 //array em ordem que substitui as informações
+                 [nome, email, senhaCripto, endereco, telefone, cpf, id]
+            )
+
+            return update;
 
         } catch (erro) {
             console.log("Erro ao atualizar o usuário", erro);

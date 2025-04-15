@@ -62,3 +62,23 @@ app.delete("/users", (req, res) => {
     res.status(200).json(resultado);
 })
 
+//atualizar o usuário
+app.put("/users/:id", async (req, res) => {
+    try {
+        const id = parseInt(req.params.id); // converte para número
+        const { nome, email, senha, endereco, telefone, cpf } = req.body; 
+
+        // Verifica se os dados foram enviados
+        if (!nome || !email || !senha || !endereco || !telefone || !cpf) {
+            return res.status(400).json({ error: "Todos os campos são obrigatórios!" });
+        }
+
+        // Chama a função do userService para atualizar o usuário
+        const resultado = await userService.updateUser(id, nome, email, senha, endereco, telefone, cpf);
+
+        res.status(200).json({ mensagem: "Usuário atualizado com sucesso!", resultado });
+    } catch (erro) {
+        console.error("Erro na atualização do usuário:", erro);
+        res.status(400).json({ error: erro.message });
+    }
+});
