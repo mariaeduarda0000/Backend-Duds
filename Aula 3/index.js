@@ -9,12 +9,15 @@ app.use(express.json()); // Configura o Express para interpretar requisições c
 app.post("/users", async (req, res) => {
     try {
         const { nome, email, senha, endereco, telefone, cpf } = req.body;
-        if (!nome || !email || !senha || !endereco || !telefone || !cpf) {   // Verifica se todos os campos obrigatórios foram fornecidos
+
+         // Verifica se todos os campos obrigatórios foram fornecidos
+        if (!nome || !email || !senha || !endereco || !telefone || !cpf) {   
             return res.status(400).json
                 ({ error: "nome e email são obrigatorios" })
         }
 
-        const user = await userService.addUser(nome, email, senha, endereco, telefone, cpf);  // Chama a função "addUser" do userService para adicionar o usuário
+        // Chama a função "addUser" do userService para adicionar o usuário
+        const user = await userService.addUser(nome, email, senha, endereco, telefone, cpf); 
         res.status(201).json({ mensagem: "Usuário cadastrado com sucesso!" });
 
     } catch (erro) {
@@ -30,37 +33,30 @@ app.get("/users", (req, res) => {
 
 
 //porta onde o servidor está rodando
-
 const port = 3000;
+
+ //se estiver rodando mostra a mensagem
 app.listen(port, () => {
-    console.log("Servidor rodando na porta:", port);  //se estiver rodando mostra a mensagem
+    console.log("Servidor rodando na porta:", port); 
 })
 
 
 //excluir o usuário através do id
 
-app.delete("/users/:id", (req, res) => {
-    const id = parseInt(req.params.id); //converte o id para número
+
+
+app.delete("/users/:id", async (req, res) => { // Adicionado "async"
+    const id = parseInt(req.params.id); // Converte o id para número
     try {
-        id = Number(id);  //converte para um numero
-        const resultado = userService.deleteUser(id); //tenta excluir o usuário
-        res.status(200).json(resultado); //se der certo, retorna a mensagem
-    } catch {
-        res.status(404).json({ error: erro.message }); //caso de errado, retorna a mensagem de erro
+        const resultado = await userService.deleteUser(id); // Aguarda o retorno da função assíncrona
+        if (resultado.mensagem === "Usuário não encontrado!") {
+            return res.status(404).json(resultado); // Retorna 404 se o usuário não for encontrado
+        }
+        res.status(200).json(resultado); // Retorna 200 se o usuário for excluído com sucesso
+    } catch (error) {
+        res.status(500).json({ error: error.message }); // Retorna 500 em caso de erro no servidor
     }
-})
-
-app.delete("/users", (req, res) => {
-    const id = req.params.id; // pega o ID 
-
-    const resultado = userService.deleteUser(id); // Chama o método corrigido
-
-    if (resultado.error) {
-        return res.status(404).json(resultado); // Retorna erro caso o ID não exista
-    }
-
-    res.status(200).json(resultado);
-})
+});
 
 //atualizar o usuário
 app.put("/users/:id", async (req, res) => {
