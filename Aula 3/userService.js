@@ -57,9 +57,7 @@ class UserService {
                 return;
             }
             const resultado = await mysql.execute(`DELETE FROM usuários WHERE id = ?`, [id]);
-            
-            console.log("Usuário excluído com sucesso!");
-            return { mensagem: "Usuário excluído com sucesso!" };
+          return resultado
        } catch (error) {
         console.log("Falha ao excluir usuário!", error.message);
         return { mensagem: "Falha ao excluir usuário!", erro: error.message };
